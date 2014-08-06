@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="1200" height="1200" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<script>
+var mousedown = false;
+var c=document.getElementById("myCanvas");
+var offsetX = c.offsetLeft,
+	offsetY = c.offsetTop;
+var ctx=c.getContext("2d");
+// ctx.beginPath();
+// ctx.arc(30,75,10,0,2*Math.PI);
+// ctx.stroke();
+			c.addEventListener('touchstart', eventDown);
+			c.addEventListener('touchend', eventUp);
+			c.addEventListener('touchmove', eventMove);
+			c.addEventListener('mousedown', eventDown);
+			c.addEventListener('mouseup', eventUp);
+			c.addEventListener('mousemove', eventMove);
+	var alli=20;
+	var bj=20;
+	for (var i = 0; i < alli; i++) {
+		   	for (var a = alli; a> i; a--) {
+		   		var x=bj*(alli-i+2*a)-alli*bj,
+		   		y=2*bj*(i+1);
+		   		var r=0,g=0,b=0;
+		   		var q=Math.random()>0.5?1200:0,w=Math.random()>0.5?1200:0;
+		   		while(r==0&&g==0&&b==0){ r=Math.round(Math.random() * 255),g=Math.round(Math.random() * 255),b=Math.round(Math.random() * 255);  }
+              // console.log(x+","+y)
+              ctx.beginPath();
+		   		ctx.fillStyle='rgb('+r+','+g+','+b+')';
+				ctx.arc(x,y,bj,0,2*Math.PI,true);
+				ctx.fill();
+              // setTimeout( function(x,y,q,w){ if(q==x){ q==0?q++:q--;}  if(w==y){w==0?w++:w--;}   ctx.transform (1,0,0,1,q,w);   }, 1000/30); 
+		   		
+				
+		   	};
+		   				};	
+
+function eventDown(e) {
+				e.preventDefault();
+				mousedown = true;
+			}
+
+			function eventUp(e) {
+				e.preventDefault();
+				mousedown = false;
+				// ctx.clearRect(40, 40, 100, 100);
+			}
+
+			function eventMove(e) {
+				e.preventDefault();
+
+				if (mousedown) {
+					
+					var x = (e.clientX + document.body.scrollLeft || e.pageX) - offsetX || 0,
+						y = (e.clientY + document.body.scrollTop || e.pageY) - offsetY || 0;
+					// p(x+","+y)
+					with(ctx) {
+						beginPath()
+						arc(x, y, 40, 0, Math.PI * 2);
+						fill();
+					}
+				}
+			}
+</script> 
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>泡泡随机圆周运动</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<style>
+body{margin:0;padding:0;background-color: #000;}
+
+</style>
+</head>
+<body>
+<canvas id="mycanvas" ></canvas>
+<script src="libs/jQuery.1.8.3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+var canvas=document.getElementById('mycanvas');
+var context=canvas.getContext('2d');
+//获取整个显示屏宽高为canvas的大小
+ canvas.width=$(window).width();
+ canvas.height=$(window).height();
+//创建园模型
+var Square=function(x,y,radiu,option){
+    this.wid=canvas.width;
+    this.hei=canvas.height;
+    this.con=context;
+    this.x=x;
+    this.y=y;
+    this.radiu=radiu;
+    this.option=option;
+    this.radius=Math.random()*5+1;
+    this.angle=0;
+}            
+Square.prototype={
+    draw:function(){
+        this.con.beginPath();
+        this.con.strokeStyle=this.option.strokeStyle;
+        this.con.lineWidth=this.option.lineWidth;
+        // this.con.scale(Math.random(),Math.random());
+        this.con.arc(this.x,this.y,this.radiu*Math.random()*5,0,2*Math.PI,true);
+        this.con.stroke();
+    },
+    move:function(){
+        /*//根据角度计算出x轴和y轴的偏移量*/
+        this.x+=this.radius*Math.cos(this.angle*(Math.PI/120));
+        this.y+=this.radius*Math.sin(this.angle*(Math.PI/120));
+        this.angle+=3;
+        this.draw();//调用画方法，让圆自己画到画布上
+    }
+}
+//创建帧动画
+var Far=function(){
+    this.width=canvas.width;
+    this.height=canvas.height;
+    this.context=context;
+    this.sint=null;
+    this.squares=[];//创建数组，用于存放圆实例
+}
+Far.prototype={
+    //循环渲染
+    star:function () {
+        this.sint=setInterval((function (param) {
+            return function () {param.render();}
+        })(this), 30)
+    },
+    //渲染方法
+    render:function () {
+        this.context.clearRect(0,0,canvas.width,canvas.height);
+        /*遍历每个圆实例，让这些圆的角度发生变化，从而让运动轨迹发生变化*/
+        for(i in this.squares){
+            this.squares[i].move();//调用圆的运动方法 
+            /*圆角度增加判断*/
+            if(this.squares[i].angle>360){
+                this.squares[i].angle=0;
+                //delete(this.squares[i]);
+            }
+        }
+    }
+}
+//创建帧实例
+var frame=new Far();
+//创建100个圆实例
+for(var i=0;i<100;i++){
+    /*圆的所有属性都是一定范围内的随机数*/
+    var x=Math.random()*(canvas.width);
+    var y=Math.random()*(canvas.height);
+    var radiu=Math.random()*20;
+    var r=Math.floor(Math.random()*256);
+    var g=Math.floor(Math.random()*256);
+    var b=Math.floor(Math.random()*256);
+    var a=Math.random();
+    var option={
+        strokeStyle:'rgba('+r+','+g+','+b+','+a+')',
+        lineWidth:Math.random()*10
+    }
+    //把圆实例放到帧模型的数组中
+    frame.squares[i]=new Square(x,y,radiu,option);
+}
+//开始渲染
+frame.star();
+
+</script>
+</body>
+</html>

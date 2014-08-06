@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<title>html5 canvas</title>
+<script src="../libs/sea3.0.0.min.js?var=201408"></script>
+<style>
+.hide{ display: none;}
+ .piclistwarp{ position: relative;}
+ .piclist{ position: absolute; left: 0; top: 0;}
+ .piclist >div {.background-position: 50% 50%; background-size: cover; }
+</style>
+</head>
+<body>
+<canvas></canvas>
+<img src="images/1.jpg" id="first">
+<div class="piclistwarp">
+			<div class="piclist">							
+				<div data-src="images/2.jpg"></div>
+			</div>
+								<!-- 大图文 3-->
+			<div class="piclist hide">
+				<div data-src="images/3.jpg"></div>	
+			</div>
+			<!-- 大图文 end-->
+		
+								<!-- 大图文 3-->
+			<div class="piclist hide">
+				<div data-src="images/1.jpg"></div>						
+			</div>
+			<!-- 大图文 end-->
+		</div>
+
+        
+</body>
+</html>
